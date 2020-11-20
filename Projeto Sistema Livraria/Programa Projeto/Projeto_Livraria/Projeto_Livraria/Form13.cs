@@ -1,0 +1,379 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Projeto_Livraria
+{
+    public partial class Form13 : Form
+    {
+        //Criando as Variáveis
+        ClienteDAO bdCli;
+        private long CPFCliente;
+        long recebecpf;
+        private string senhaCliente, nomeCliente, ruaCliente, numeroCliente, CEPCliente, cidadeCliente, bairroCliente, UFCliente, paisCliente, telefoneCliente, emailCliente, metodoConsultar, recebe;
+        public string num3, num6, num9, num11;
+        public bool consult;
+        public Form13(long cpf)
+        {
+            InitializeComponent();
+            bdCli = new ClienteDAO();
+            maskedTextBoxCPFouCNPJ.ReadOnly = true;
+            maskedTextBoxSenha.ReadOnly = true;
+            maskedTextBoxNome.ReadOnly = true;
+            maskedTextBoxRua.ReadOnly = true;
+            maskedTextBoxNumero.ReadOnly = true;
+            maskedTextBoxCEP.ReadOnly = true;
+            maskedTextBoxCidade.ReadOnly = true;
+            maskedTextBoxBairro.ReadOnly = true;
+            maskedTextBoxUF.ReadOnly = true;
+            maskedTextBoxPais.ReadOnly = true;
+            maskedTextBoxTelefone.ReadOnly = true;
+            maskedTextBoxEmail.ReadOnly = true;            
+            ConsultaCPFCliente = 0;
+            ConsultaSenhaCliente = "";
+            ConsultaNomeCliente = "";
+            ConsultaRuaCliente = "";
+            ConsultaNumeroCliente = "";
+            ConsultaCEPCliente = "";
+            ConsultaCidadeCliente = "";
+            ConsultaBairroCliente = "";
+            ConsultaUFCliente = "";
+            ConsultaPaisCliente = "";
+            ConsultaTelefoneCliente = "";
+            ConsultaEmailCliente = "";
+            RecebeRec = "";            
+            num3 = "";
+            num6 = "";
+            num9 = "";
+            num11 = "";
+            consult = false;
+            recebecpf = cpf;
+        }
+        //Ciando os Métodos Gets e Sets        
+        public long ConsultaCPFCliente
+        {
+            get { return CPFCliente; }
+            set { this.CPFCliente = value; }
+        }
+        public string ConsultaSenhaCliente
+        {
+            get { return senhaCliente; }
+            set { this.senhaCliente = value; }
+        }
+        public string ConsultaNomeCliente
+        {
+            get { return nomeCliente; }
+            set { this.nomeCliente = value; }
+        }
+        public string ConsultaRuaCliente
+        {
+            get { return ruaCliente; }
+            set { this.ruaCliente = value; }
+        }
+        public string ConsultaNumeroCliente
+        {
+            get { return numeroCliente; }
+            set { this.numeroCliente = value; }
+        }
+        public string ConsultaCEPCliente
+        {
+            get { return CEPCliente; }
+            set { this.CEPCliente = value; }
+        }
+        public string ConsultaCidadeCliente
+        {
+            get { return cidadeCliente; }
+            set { this.cidadeCliente = value; }
+        }
+        public string ConsultaBairroCliente
+        {
+            get { return bairroCliente; }
+            set { this.bairroCliente = value; }
+        }
+        public string ConsultaUFCliente
+        {
+            get { return UFCliente; }
+            set { this.UFCliente = value; }
+        }
+        public string ConsultaPaisCliente
+        {
+            get { return paisCliente; }
+            set { this.paisCliente = value; }
+        }
+        public string ConsultaTelefoneCliente
+        {
+            get { return telefoneCliente; }
+            set { this.telefoneCliente = value; }
+        }
+        public string ConsultaEmailCliente
+        {
+            get { return emailCliente; }
+            set { this.emailCliente = value; }
+        }
+        public string ConsultaMetodoConsultar
+        {
+            get { return metodoConsultar; }
+            set { this.metodoConsultar = value; }
+        }
+        public string RecebeRec
+        {
+            get { return recebe; }
+            set { this.recebe = value; }
+        }       
+
+        private void maskedTextBoxCPFouCNPJ_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxSenha_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxNome_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxRua_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxNumero_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxCEP_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxBairro_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxCidade_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxUF_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxPais_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxTelefone_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxEmail_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void buttonAtualizar_Click(object sender, EventArgs e)
+        {
+            if (consult == true)
+            {
+                AtualizaIndividual();
+                consult = false;
+                maskedTextBoxCPFouCNPJ.ReadOnly = true;
+                maskedTextBoxSenha.ReadOnly = true;
+                maskedTextBoxNome.ReadOnly = true;
+                maskedTextBoxRua.ReadOnly = true;
+                maskedTextBoxNumero.ReadOnly = true;
+                maskedTextBoxCEP.ReadOnly = true;
+                maskedTextBoxCidade.ReadOnly = true;
+                maskedTextBoxBairro.ReadOnly = true;
+                maskedTextBoxUF.ReadOnly = true;
+                maskedTextBoxPais.ReadOnly = true;
+                maskedTextBoxTelefone.ReadOnly = true;
+                maskedTextBoxEmail.ReadOnly = true;
+            }
+            else
+            {
+                MessageBox.Show("Precisa Consultar para poder Atualizar");
+            }
+        }
+        public void AtualizaIndividual()
+        {
+            try
+            {
+                if ((maskedTextBoxCPFouCNPJ.Text == "") || (maskedTextBoxSenha.Text == "") || (maskedTextBoxNome.Text == "") || (maskedTextBoxRua.Text == "") || (maskedTextBoxNumero.Text == "") || (maskedTextBoxCEP.Text == "") || (maskedTextBoxCidade.Text == "") || (maskedTextBoxBairro.Text == "") || (maskedTextBoxUF.Text == "") || (maskedTextBoxPais.Text == "") || (maskedTextBoxTelefone.Text == "") || (maskedTextBoxEmail.Text == ""))
+                {
+                    MessageBox.Show("Um ou mais campos estão vazios!");
+                                    
+                }
+                else
+                {
+                    bdCli.AtualizarSenha(maskedTextBoxSenha.Text, Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarNome(maskedTextBoxNome.Text.ToUpper(), Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarRua(maskedTextBoxRua.Text.ToUpper(), Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarNumero(maskedTextBoxNumero.Text, Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarCEP(maskedTextBoxCEP.Text, Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarCidade(maskedTextBoxCidade.Text.ToUpper(), Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarBairro(maskedTextBoxBairro.Text.ToUpper(), Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarUF(maskedTextBoxUF.Text.ToUpper(), Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarPais(maskedTextBoxPais.Text.ToUpper(), Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarTelefone(maskedTextBoxTelefone.Text, Convert.ToInt64(ReceberCPF()));
+                    bdCli.AtualizarEmail(maskedTextBoxEmail.Text, Convert.ToInt64(ReceberCPF()));                    
+                    MessageBox.Show("Dado Atualizado com Sucesso!");
+                    Limpar();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Informe o CPF que deverá ser atualidado e o respectivo campo!");
+            }
+        }
+
+        private void buttonConsultar_Click(object sender, EventArgs e)
+        {
+            maskedTextBoxCPFouCNPJ.ReadOnly = false;
+            maskedTextBoxSenha.ReadOnly = true;
+            maskedTextBoxNome.ReadOnly = true;
+            maskedTextBoxRua.ReadOnly = true;
+            maskedTextBoxNumero.ReadOnly = true;
+            maskedTextBoxCEP.ReadOnly = true;
+            maskedTextBoxCidade.ReadOnly = true;
+            maskedTextBoxBairro.ReadOnly = true;
+            maskedTextBoxUF.ReadOnly = true;
+            maskedTextBoxPais.ReadOnly = true;
+            maskedTextBoxTelefone.ReadOnly = true;
+            maskedTextBoxEmail.ReadOnly = true;            
+
+            if (maskedTextBoxCPFouCNPJ.Text != "")
+            {
+                ConsultaAtualizar();
+                consult = true;
+                if ((maskedTextBoxCPFouCNPJ.Text != "") && (maskedTextBoxSenha.Text != "") && (maskedTextBoxNome.Text != "") && (maskedTextBoxRua.Text != "") && (maskedTextBoxNumero.Text != "") && (maskedTextBoxCEP.Text != "") && (maskedTextBoxCidade.Text != "") && (maskedTextBoxBairro.Text != "") && (maskedTextBoxUF.Text != "") && (maskedTextBoxPais.Text != "") && (maskedTextBoxTelefone.Text != "") && (maskedTextBoxEmail.Text != ""))
+                {
+                    MessageBox.Show("Modifique os campos de deseja e clique em --Atualizar--" +
+                            "\n\n                                       ou                      " +
+                            "\n\nclique em --Cancelar-- para Manter registros");
+                    maskedTextBoxCPFouCNPJ.ReadOnly = true;
+                    maskedTextBoxSenha.ReadOnly = false;
+                    maskedTextBoxNome.ReadOnly = false;
+                    maskedTextBoxRua.ReadOnly = false;
+                    maskedTextBoxNumero.ReadOnly = false;
+                    maskedTextBoxCEP.ReadOnly = false;
+                    maskedTextBoxCidade.ReadOnly = false;
+                    maskedTextBoxBairro.ReadOnly = false;
+                    maskedTextBoxUF.ReadOnly = false;
+                    maskedTextBoxPais.ReadOnly = false;
+                    maskedTextBoxTelefone.ReadOnly = false;
+                    maskedTextBoxEmail.ReadOnly = false;
+                }
+                else
+                {
+                    MessageBox.Show("CPF não encontrado!");
+                }
+
+            }
+            else 
+            {
+                MessageBox.Show("Informa o CPF para Consulta");
+            }            
+        }
+            
+        public void ConsultaAtualizar()
+        {
+            try
+            {
+                maskedTextBoxCPFouCNPJ.Text = "" + bdCli.ConsultarCPF(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxSenha.Text = bdCli.ConsultarSenha(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxNome.Text = bdCli.ConsultarNome(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxRua.Text = bdCli.ConsultarRua(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxNumero.Text = bdCli.ConsultarNumero(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxCEP.Text = bdCli.ConsultarCEP(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxCidade.Text = bdCli.ConsultarCidade(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxBairro.Text = bdCli.ConsultarBairro(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxUF.Text = bdCli.ConsultarUF(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxPais.Text = bdCli.ConsultarPais(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxTelefone.Text = bdCli.ConsultarTelefone(Convert.ToInt64(ReceberCPF()));
+                maskedTextBoxEmail.Text = bdCli.ConsultarEmail(Convert.ToInt64(ReceberCPF()));
+            }
+            catch
+            {
+                MessageBox.Show("Informe o CPF!");                
+            }
+        }
+        public string ReceberCPF()
+        {
+            RecebeRec = maskedTextBoxCPFouCNPJ.Text;//000.000.000-00
+            num3 = RecebeRec.Substring(0, 3);
+            num6 = RecebeRec.Substring(4, 3);
+            num9 = RecebeRec.Substring(8, 3);
+            num11 = RecebeRec.Substring(12, 2);
+            return RecebeRec = num3 + num6 + num9 + num11;
+        }
+
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            maskedTextBoxCPFouCNPJ.ReadOnly = true;
+            maskedTextBoxSenha.ReadOnly = true;
+            maskedTextBoxNome.ReadOnly = true;
+            maskedTextBoxRua.ReadOnly = true;
+            maskedTextBoxNumero.ReadOnly = true;
+            maskedTextBoxCEP.ReadOnly = true;
+            maskedTextBoxCidade.ReadOnly = true;
+            maskedTextBoxBairro.ReadOnly = true;
+            maskedTextBoxUF.ReadOnly = true;
+            maskedTextBoxPais.ReadOnly = true;
+            maskedTextBoxTelefone.ReadOnly = true;
+            maskedTextBoxEmail.ReadOnly = true;
+            Limpar();
+        }
+
+        private void buttonRetornar_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            Form10 login5 = new Form10(recebecpf);
+            login5.ShowDialog();
+        }
+
+        private void Form13_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                Application.Exit();
+            }
+            catch
+            {
+                MessageBox.Show("Algo deu errado!");
+            }
+        }
+        public void Limpar()
+        {
+            maskedTextBoxCPFouCNPJ.Text = "";
+            maskedTextBoxSenha.Text = "";
+            maskedTextBoxNome.Text = "";
+            maskedTextBoxRua.Text = "";
+            maskedTextBoxNumero.Text = "";
+            maskedTextBoxCEP.Text = "";
+            maskedTextBoxCidade.Text = "";
+            maskedTextBoxBairro.Text = "";
+            maskedTextBoxUF.Text = "";
+            maskedTextBoxPais.Text = "";
+            maskedTextBoxTelefone.Text = "";
+            maskedTextBoxEmail.Text = "";
+        }
+    }
+}
